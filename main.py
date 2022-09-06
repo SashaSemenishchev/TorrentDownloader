@@ -36,7 +36,7 @@ def start_download():
         torrent = TorrentClient(path, uuid)
         torrent.start()
         app.config["downloading"][uuid] = torrent
-    return redirect(f"/downloading/?download_id={uuid}&filename={filename}")
+    return redirect(f"/downloading?download_id={uuid}&filename={filename}")
 
 @app.route("/downloading")
 def upload_status():
@@ -50,6 +50,7 @@ def download(filename):
 @socket.on("connection_data")
 def on_connection(message):
     def on_progress(progress):
+        print(progress)
         emit("download_update", {"data": str(progress)})
     def on_finish():
         del app.config["downloading"][message["data"]]
