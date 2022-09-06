@@ -1,6 +1,5 @@
 from torrent.main import TorrentClient
-from urllib import request
-from flask import Flask, render_template, redirect, send_from_directory
+from flask import Flask, render_template, redirect, send_from_directory, request
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 import os
