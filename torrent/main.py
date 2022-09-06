@@ -40,6 +40,7 @@ class TorrentClient:
         self.peers_manager.start()
         self.on_progress = on_progress_dummy
         self.on_finish = on_finish_dummy
+        self.on_start = None
         logging.info("PeersManager Started")
         logging.info("PiecesManager Started")
 
@@ -49,6 +50,8 @@ class TorrentClient:
     def set_on_finish(self, func):
         self.on_finish = func
     def run(self):
+        peers_dict = self.tracker.get_peers_from_trackers()
+        self.peers_manager.add_peers(peers_dict.values())
         while not self.pieces_manager.all_pieces_completed():
             if not self.peers_manager.has_unchoked_peers():
                 time.sleep(1)
@@ -86,8 +89,7 @@ class TorrentClient:
             os.remove(piece)
         self._exit_threads()
     def start(self):
-        peers_dict = self.tracker.get_peers_from_trackers()
-        self.peers_manager.add_peers(peers_dict.values())
+        
         thread = Thread(daemon=True, target=self.run)
         thread.start()
         

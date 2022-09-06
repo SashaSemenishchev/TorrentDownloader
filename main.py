@@ -23,7 +23,9 @@ socket = SocketIO(app)
 @app.route("/index")
 def upload():
     return render_template("index.html")
-
+# def on_start():
+#     with app.test_request_context("/downloading"):
+#         emit()
 @app.route("/download-start/", methods=["POST"])
 def start_download():
     uuid = str(uuid4())
@@ -37,6 +39,7 @@ def start_download():
         path = os.path.join(app.config['UPLOAD_FOLDER'] + "uploads/", f"{uuid}.torrent")
         file.save(path)
         torrent = TorrentClient(path, uuid)
+        # torrent.on_start = 
         torrent.start()
         app.config["downloading"][uuid] = torrent
     return redirect(f"/downloading?download_id={uuid}&filename={filename}")
@@ -54,10 +57,13 @@ def download(filename):
 def on_connection(message):
     def on_progress(progress):
         print(progress)
-        emit("download_update", {"data": str(progress)})
+        
+        with socket.test_request_context("/downloading"):
+            emit("download_update", {"data": str(progress)})
     def on_finish():
         del app.config["downloading"][message["data"]]
-        emit("download_finish")
+        with app.test_request_context("/downloading"):
+            emit("download_finish")
     torrent = app.config["downloading"][message["data"]]
     torrent.set_on_progress(on_progress)
     torrent.set_on_finish(on_finish)
