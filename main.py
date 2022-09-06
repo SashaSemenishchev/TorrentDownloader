@@ -31,7 +31,6 @@ def start_download():
             return redirect("/")
     if file and allowed_file(file.filename):
         filename = secure_filename(file.filename)
-        uuid = request.args.get("download_id")
         path = os.path.join(app.config['UPLOAD_FOLDER'] + "uploads/", f"{uuid}.torrent")
         file.save(path)
         torrent = TorrentClient(path)
