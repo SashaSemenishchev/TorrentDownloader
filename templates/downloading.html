@@ -56,7 +56,8 @@
         progressBar.hidden = true;
         download_button = document.getElementById("download_button")
         download_button.hidden = false;
-        download_button.href = "/download/id={{ download_id }}"
+        download_button.href = "/download/{{ download_id }}"
+        socket.disconnect()
     });
 
     function updateProgressBar(pb, percentage) {
