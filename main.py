@@ -22,7 +22,7 @@ socket = SocketIO(app)
 def upload():
     return render_template("index.html")
 
-@app.route("/download-start", methods=["POST"])
+@app.route("/download-start/", methods=["POST"])
 def start_download():
     uuid = str(uuid4())
     if "file" not in request.files:
