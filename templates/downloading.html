@@ -41,7 +41,7 @@
 <script>
     socket = io();
 
-    socket.on("connect", (socket) => {
+    socket.on("connect", () => {
         socket.emit("connection_data", {data: "{{ download_id }}"})
     });
     let progressBar = document.getElementById("progressbar")
