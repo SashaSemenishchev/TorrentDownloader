@@ -8,7 +8,7 @@ import bitstring
 from pubsub import pub
 import logging
 
-import message
+from . import message
 
 
 class Peer(object):

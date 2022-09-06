@@ -5,10 +5,10 @@ __author__ = 'alexisgallepe'
 import select
 from threading import Thread
 from pubsub import pub
-import rarest_piece
+from . import rarest_piece
 import logging
-import message
-import peer
+from . import message
+from . import peer
 import errno
 import socket
 import random

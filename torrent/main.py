@@ -1,19 +1,19 @@
-from concurrent.futures import thread
+
 import sys
-from block import State
+from .block import State
 import zipfile
 import os
 
 __author__ = 'alexisgallepe'
 
 import time
-import peers_manager
-import pieces_manager
-import torrent
-import tracker
+from . import peers_manager
+from . import pieces_manager
+from . import torrent
+from . import tracker
 import logging
 from threading import Thread
-import message
+from . import message
 
 def on_progress_dummy(p):
     pass
