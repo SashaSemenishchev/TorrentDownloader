@@ -3,7 +3,7 @@ from flask import Flask, render_template, redirect, send_from_directory, request
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 import os
-from flask_socketio import SocketIO, emit
+from flask_socketio import SocketIO, emit, socketio
 
 UPLOAD_FOLDER = 'runs/'
 os.makedirs("runs/uploads", exist_ok=True)
@@ -58,7 +58,7 @@ def on_connection(message):
     def on_progress(progress):
         print(progress)
         
-        with socket.test_request_context("/downloading"):
+        with app.test_request_context("/downloading"):
             emit("download_update", {"data": str(progress)})
     def on_finish():
         del app.config["downloading"][message["data"]]
