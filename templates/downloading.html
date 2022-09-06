@@ -46,11 +46,13 @@
     });
     let progressBar = document.getElementById("progressbar")
 
-    socket.on("download_update", (message, callback) => {
+    socket.on("download_update", (message) => {
+      console.log(message);
         updateProgressBar(progressBar, message.data)
     });
 
     socket.on("download_finish", () => {
+      console.log("finished")
         progressBar.hidden = true;
         download_button = document.getElementById("download_button")
         download_button.hidden = false;
