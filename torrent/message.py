@@ -24,7 +24,7 @@ class MessageDispatcher:
         try:
             payload_length, message_id, = unpack(">IB", self.payload[:5])
         except Exception as e:
-            logging.warning("Error when unpacking message : %s" % e.__str__())
+            logging.debug("Error when unpacking message : %s" % e.__str__())
             return None
 
         map_id_to_message = {

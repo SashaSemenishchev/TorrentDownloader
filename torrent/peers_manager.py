@@ -83,7 +83,8 @@ class PeersManager(Thread):
             except socket.error as e:
                 err = e.args[0]
                 if err != errno.EAGAIN or err != errno.EWOULDBLOCK:
-                    logging.debug("Wrong errno {}".format(err))
+                    #logging.debug("Wrong errno {}".format(err))
+                    pass
                 break
             except Exception:
                 logging.exception("Recv failed")

@@ -43,8 +43,6 @@ class TorrentClient:
         self.on_finish = on_finish_dummy
         self.on_start = None
         self.old_percentage = 0
-        logging.info("PeersManager Started")
-        logging.info("PiecesManager Started")
 
     def set_on_progress(self, func):
         self.on_progress = func
@@ -63,7 +61,6 @@ class TorrentClient:
         while not self.pieces_manager.all_pieces_completed():
             if not self.peers_manager.has_unchoked_peers():
                 time.sleep(1)
-                logging.info("No unchocked peers")
                 continue
 
             for piece in self.pieces_manager.pieces:

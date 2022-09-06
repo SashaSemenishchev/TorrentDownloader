@@ -34,8 +34,8 @@ class Torrent(object):
         self.announce_list = self.get_trakers()
         self.init_files()
         self.number_of_pieces = math.ceil(self.total_length / self.piece_length)
-        logging.debug(self.announce_list)
-        logging.debug(self.file_names)
+        #logging.debug(self.announce_list)
+        #logging.debug(self.file_names)
 
         assert(self.total_length > 0)
         assert(len(self.file_names) > 0)

@@ -117,6 +117,6 @@ class Piece(object):
         if hashed_piece_raw_data == self.piece_hash:
             return True
 
-        logging.warning("Error Piece Hash")
-        logging.debug("{} : {}".format(hashed_piece_raw_data, self.piece_hash))
+        logging.debug("Error Piece Hash")
+        #logging.debug("{} : {}".format(hashed_piece_raw_data, self.piece_hash))
         return False
