@@ -14,6 +14,7 @@ from . import tracker
 import logging
 from threading import Thread
 from . import message
+import math
 
 def on_progress_dummy(p):
     pass
@@ -41,6 +42,7 @@ class TorrentClient:
         self.on_progress = on_progress_dummy
         self.on_finish = on_finish_dummy
         self.on_start = None
+        self.old_percentage = 0
         logging.info("PeersManager Started")
         logging.info("PiecesManager Started")
 
@@ -49,9 +51,15 @@ class TorrentClient:
 
     def set_on_finish(self, func):
         self.on_finish = func
+    def set_on_start(self, func):
+        self.on_start = func
     def run(self):
         peers_dict = self.tracker.get_peers_from_trackers()
         self.peers_manager.add_peers(peers_dict.values())
+        if(self.on_start):
+            try:
+                self.on_start(self)
+            except: pass
         while not self.pieces_manager.all_pieces_completed():
             if not self.peers_manager.has_unchoked_peers():
                 time.sleep(1)
@@ -92,7 +100,7 @@ class TorrentClient:
         
         thread = Thread(daemon=True, target=self.run)
         thread.start()
-        
+
     def display_progression(self):
         new_progression = 0
 
@@ -106,7 +114,11 @@ class TorrentClient:
 
         # number_of_peers = self.peers_manager.unchoked_peers_count()
         percentage_completed = float((float(new_progression) / self.torrent.total_length) * 100)
-        self.on_progress(self, percentage_completed)
+        rounded = math.floor(percentage_completed)
+        if(rounded == self.old_percentage):
+            return
+        self.old_percentage = rounded
+        self.on_progress(self, rounded)
 
         # current_log_line = "Connected peers: {} - {}% completed | {}/{} pieces".format(number_of_peers,
         #                                                                                  round(percentage_completed, 2),

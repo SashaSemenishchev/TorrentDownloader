@@ -39,8 +39,11 @@ def start_download():
         filename = secure_filename(file.filename)
         path = os.path.join(app.config['UPLOAD_FOLDER'] + "uploads/", f"{uuid}.torrent")
         file.save(path)
+
         torrent = TorrentClient(path, uuid)
-        # torrent.on_start = 
+        def on_start(torrent):
+            socket.emit("download_status", {"data": "Загрузка"}, to=app.config["active"][torrent])
+        torrent.on_start = on_start
         torrent.start()
         app.config["downloading"][uuid] = torrent
     return redirect(f"/downloading?download_id={uuid}&filename={filename}")
@@ -57,7 +60,6 @@ def download(filename):
 @socket.on("connection_data")
 def on_connection(message):
     def on_progress(torrent, progress):
-        print(progress)
         socket.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
     def on_finish(torrent):
         del app.config["downloading"][message["data"]]
@@ -67,7 +69,7 @@ def on_connection(message):
     app.config["active"][torrent] = request.sid
     torrent.set_on_progress(on_progress)
     torrent.set_on_finish(on_finish)
-    socket.emit("download_status", {"data": "Searching peers"}, to=request.sid)
+    socket.emit("download_status", {"data": "Поиск пиров"}, to=request.sid)
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
