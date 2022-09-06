@@ -67,7 +67,7 @@ def on_connection(message):
     app.config["active"][torrent] = request.sid
     torrent.set_on_progress(on_progress)
     torrent.set_on_finish(on_finish)
-    SocketIO.emit("download_status", {"data": "Searching peers"}, to=request.sid)
+    socket.emit("download_status", {"data": "Searching peers"}, to=request.sid)
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
