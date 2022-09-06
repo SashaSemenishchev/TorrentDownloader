@@ -6,9 +6,9 @@ import os
 from flask_socketio import SocketIO, emit
 
 UPLOAD_FOLDER = 'runs/'
-os.makedirs("runs/uploads")
-os.makedirs("runs/downloads")
-os.makedirs("temp")
+os.makedirs("runs/uploads", exist_ok=True)
+os.makedirs("runs/downloads", exist_ok=True)
+os.makedirs("temp", exist_ok=True)
 ALLOWED_EXTENSIONS = {'torrent', "bittorrent"}
 def allowed_file(filename):
     return '.' in filename and \
