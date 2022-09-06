@@ -17,6 +17,7 @@ def allowed_file(filename):
 app = Flask("TorrentDownloader")
 app.config['UPLOAD_FOLDER'] = UPLOAD_FOLDER
 app.config["downloading"] = {}
+app.config["active"] = {}
 socket = SocketIO(app)
 
 @app.route("/")
@@ -55,16 +56,15 @@ def download(filename):
 
 @socket.on("connection_data")
 def on_connection(message):
-    def on_progress(progress):
+    def on_progress(torrent, progress):
         print(progress)
-        
-        with app.test_request_context("/downloading"):
-            emit("download_update", {"data": str(progress)})
-    def on_finish():
+        socketio.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
+    def on_finish(torrent):
         del app.config["downloading"][message["data"]]
-        with app.test_request_context("/downloading"):
-            emit("download_finish")
+        socketio.emit("download_finish", to=app.config["active"][torrent])
+        del app.config["active"][torrent]
     torrent = app.config["downloading"][message["data"]]
+    app.config["active"][torrent] = request.sid
     torrent.set_on_progress(on_progress)
     torrent.set_on_finish(on_finish)
 

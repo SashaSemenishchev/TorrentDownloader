@@ -106,7 +106,7 @@ class TorrentClient:
 
         # number_of_peers = self.peers_manager.unchoked_peers_count()
         percentage_completed = float((float(new_progression) / self.torrent.total_length) * 100)
-        self.on_progress(percentage_completed)
+        self.on_progress(self, percentage_completed)
 
         # current_log_line = "Connected peers: {} - {}% completed | {}/{} pieces".format(number_of_peers,
         #                                                                                  round(percentage_completed, 2),
@@ -120,5 +120,5 @@ class TorrentClient:
 
     def _exit_threads(self):
         self.peers_manager.is_active = False
-        self.on_finish()
+        self.on_finish(self)
 
