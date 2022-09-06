@@ -58,10 +58,10 @@ def download(filename):
 def on_connection(message):
     def on_progress(torrent, progress):
         print(progress)
-        SocketIO.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
+        socket.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
     def on_finish(torrent):
         del app.config["downloading"][message["data"]]
-        SocketIO.emit("download_finish", to=app.config["active"][torrent])
+        socket.emit("download_finish", to=app.config["active"][torrent])
         del app.config["active"][torrent]
     torrent = app.config["downloading"][message["data"]]
     app.config["active"][torrent] = request.sid
