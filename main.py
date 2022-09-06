@@ -58,15 +58,16 @@ def download(filename):
 def on_connection(message):
     def on_progress(torrent, progress):
         print(progress)
-        socketio.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
+        SocketIO.emit("download_update", {"data": str(progress)}, to=app.config["active"][torrent])
     def on_finish(torrent):
         del app.config["downloading"][message["data"]]
-        socketio.emit("download_finish", to=app.config["active"][torrent])
+        SocketIO.emit("download_finish", to=app.config["active"][torrent])
         del app.config["active"][torrent]
     torrent = app.config["downloading"][message["data"]]
     app.config["active"][torrent] = request.sid
     torrent.set_on_progress(on_progress)
     torrent.set_on_finish(on_finish)
+    SocketIO.emit("download_status", {"data": "Searching peers"}, to=request.sid)
 
 if __name__ == "__main__":
     app.run(port=8080, debug=True)
