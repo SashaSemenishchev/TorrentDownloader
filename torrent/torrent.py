@@ -43,7 +43,7 @@ class Torrent(object):
         return self
 
     def init_files(self):
-        root = self.torrent_file['info']['name']
+        root = "temp/" + self.torrent_file['info']['name']
 
         if 'files' in self.torrent_file['info']:
             if not os.path.exists(root):
