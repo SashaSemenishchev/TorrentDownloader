@@ -5,7 +5,7 @@ from uuid import uuid4
 import os
 from flask_socketio import SocketIO, emit
 
-UPLOAD_FOLDER = '/runs/'
+UPLOAD_FOLDER = 'runs/'
 ALLOWED_EXTENSIONS = {'torrent', "bittorrent"}
 def allowed_file(filename):
     return '.' in filename and \
