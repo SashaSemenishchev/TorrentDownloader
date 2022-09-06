@@ -33,7 +33,7 @@ def start_download():
         filename = secure_filename(file.filename)
         path = os.path.join(app.config['UPLOAD_FOLDER'] + "uploads/", f"{uuid}.torrent")
         file.save(path)
-        torrent = TorrentClient(path)
+        torrent = TorrentClient(path, uuid)
         torrent.start()
         app.config["downloading"][uuid] = torrent
     return redirect(f"/downloading/?download_id={uuid}&filename={filename}")
