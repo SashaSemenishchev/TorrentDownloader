@@ -88,12 +88,12 @@ class TorrentClient:
             time.sleep(0.1)
         self.display_progression()
         try:
-
+            files = self.pieces_manager.torrent.file_names
             with zipfile.ZipFile(f"runs/downloads/{self.uuid}.zip", "w") as zip:
-                for piece in self.pieces_manager._load_files:
+                for piece in files:
                     print(piece['path'])
                     zip.write(piece['path'])
-            for piece in self.pieces_manager.files:
+            for piece in files:
                 os.remove(piece['path'])
         except: pass
         self.on_finish(self)
