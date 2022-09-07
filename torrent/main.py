@@ -92,6 +92,7 @@ class TorrentClient:
                 zip.write(piece['path'])
         for piece in self.pieces_manager.files:
             os.remove(piece['path'])
+        self.on_finish(self)
         self._exit_threads()
     def start(self):
         
@@ -129,5 +130,4 @@ class TorrentClient:
 
     def _exit_threads(self):
         self.peers_manager.is_active = False
-        self.on_finish(self)
 
