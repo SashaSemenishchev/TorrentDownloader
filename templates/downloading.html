@@ -22,11 +22,11 @@
         <p class="lead">Файл: {{ downloading }}</p>
         <div>
           <label id="status" for="formFile" class="form-label">Загрузка на внешний сервер</label>
-          <div id="progressbardiv" class="progress" style="height: 15px;">
+          <div id="progressbardiv" class="progress" style="height: 20px;">
             <div id="progressbar" class="progress-bar bg-success" role="progressbar" style="width: 0%" aria-valuenow="0" aria-valuemin="0" aria-valuemax="100"></div>
           </div>
         </div>
-        
+        <br>
         <a id="download_button" href="" type="button" class="btn btn-success" hidden>Скачать</a>
         </div>
       </div>
@@ -64,7 +64,7 @@
         progressBar.hidden = true;
         download_button = document.getElementById("download_button")
         download_button.hidden = false;
-        download_button.href = "/download/{{ download_id }}"
+        download_button.href = "/download/{{ download_id }}/"
         socket.disconnect()
     });
 

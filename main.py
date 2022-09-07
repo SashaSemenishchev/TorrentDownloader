@@ -1,5 +1,5 @@
 from torrent.main import TorrentClient
-from flask import Flask, render_template, redirect, send_from_directory, request
+from flask import Flask, render_template, redirect, request, send_file
 from werkzeug.utils import secure_filename
 from uuid import uuid4
 import os
@@ -55,7 +55,7 @@ def upload_status():
 @app.route("/download/<path:filename>")
 def download(filename):
     uploads = app.config['UPLOAD_FOLDER'] + "downloads/"
-    return send_from_directory(directory=uploads, filename=filename + ".zip")
+    return send_file(os.path.join(uploads, filename + ".zip"), as_attachment=True, download_name=filename + ".zip")
 
 @socket.on("connection_data")
 def on_connection(message):
