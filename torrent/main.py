@@ -91,7 +91,7 @@ class TorrentClient:
             for piece in self.pieces_manager.files:
                 zip.write(piece['path'])
         for piece in self.pieces_manager.files:
-            os.remove(piece)
+            os.remove(piece['path'])
         self._exit_threads()
     def start(self):
         
