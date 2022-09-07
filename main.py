@@ -52,10 +52,10 @@ def start_download():
 def upload_status():
     return render_template("downloading.html", downloading=request.args.get("filename"), download_id=request.args.get("download_id"))
 
-@app.route("/download/<path:filename>")
-def download(filename):
+@app.route("/download/<path:download_id>")
+def download(download_id):
     uploads = app.config['UPLOAD_FOLDER'] + "downloads/"
-    return send_file(os.path.join(uploads, filename + ".zip"), as_attachment=True, download_name=filename + ".zip")
+    return send_file(os.path.join(uploads, download_id.replace("/", "") + ".zip"), as_attachment=True, download_name=request.args.get("filename") + ".zip")
 
 @socket.on("connection_data")
 def on_connection(message):
