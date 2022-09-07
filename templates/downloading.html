@@ -61,6 +61,7 @@
 
     socket.on("download_finish", () => {
       console.log("finished")
+      document.getElementById("status").hidden = true;
         document.getElementById("progressbardiv").hidden = true;
         download_button = document.getElementById("download_button")
         download_button.hidden = false;

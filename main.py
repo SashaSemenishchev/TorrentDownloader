@@ -55,7 +55,7 @@ def upload_status():
 @app.route("/download/<path:download_id>")
 def download(download_id):
     uploads = app.config['UPLOAD_FOLDER'] + "downloads/"
-    return send_file(os.path.join(uploads, download_id.replace("/", "") + ".zip"), as_attachment=True, download_name=request.args.get("filename") + ".zip")
+    return send_file(os.path.join(uploads, download_id.replace("/", "") + ".zip"), as_attachment=True, download_name=request.args.get("filename").replace(".torrent", "") + ".zip")
 
 @socket.on("connection_data")
 def on_connection(message):
