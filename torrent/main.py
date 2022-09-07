@@ -91,8 +91,9 @@ class TorrentClient:
             files = self.pieces_manager.torrent.file_names
             with zipfile.ZipFile(f"runs/downloads/{self.uuid}.zip", "w") as zip:
                 for piece in files:
-                    print(piece['path'])
-                    zip.write(piece['path'])
+                    file_path = piece['path']
+                    print(file_path)
+                    zip.write(file_path, file_path.replace("temp/", "", 1))
             for piece in files:
                 os.remove(piece['path'])
         except: pass
