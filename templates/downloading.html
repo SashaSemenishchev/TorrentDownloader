@@ -48,6 +48,7 @@
       status.hidden = true;
       pbdiv.hidden = true;
       download_button.hidden = false;
+      download_button.href = "/download/{{ download_id }}?filename={{ downloading }}"
     } else {
       socket = io();
 
