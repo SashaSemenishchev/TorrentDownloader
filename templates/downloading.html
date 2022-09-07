@@ -41,35 +41,44 @@
 </body>
 </html>
 <script>
-    socket = io();
+    let download_button = document.getElementById("download_button")
+    let status = document.getElementById("status")
+    let pbdiv = document.getElementById("progressbardiv")
+    if("{{ downloaded }}" === "True") {
+      status.hidden = true;
+      pbdiv.hidden = true;
+      download_button.hidden = false;
+    } else {
+      socket = io();
 
-    socket.on("connect", () => {
-        socket.emit("connection_data", {data: "{{ download_id }}"})
-    });
-    let progressBar = document.getElementById("progressbar")
+      socket.on("connect", () => {
+          socket.emit("connection_data", {data: "{{ download_id }}"})
+      });
+      let progressBar = document.getElementById("progressbar")
 
-    socket.on("download_update", (message) => {
-      console.log(message);
-        updateProgressBar(progressBar, message.data)
-    });
+      socket.on("download_update", (message) => {
+        console.log(message);
+          updateProgressBar(progressBar, message.data)
+      });
 
-    socket.on("download_status", (message) => {
-      console.log(message);
-      document.getElementById("status").innerHTML = message.data
-    });
+      socket.on("download_status", (message) => {
+        console.log(message);
+        status.innerHTML = message.data
+      });
 
-    socket.on("download_finish", () => {
-      console.log("finished")
-      document.getElementById("status").hidden = true;
-        document.getElementById("progressbardiv").hidden = true;
-        download_button = document.getElementById("download_button")
-        download_button.hidden = false;
-        download_button.href = "/download/{{ download_id }}?filename={{ downloading }}"
-        socket.disconnect()
-    });
+      socket.on("download_finish", () => {
+          console.log("finished")
+          status.hidden = true;
+          pbdiv.hidden = true;
+          download_button.hidden = false;
+          download_button.href = "/download/{{ download_id }}?filename={{ downloading }}"
+          socket.disconnect()
+      });
 
-    function updateProgressBar(pb, percentage) {
-        progressBar.ariaValueNow = percentage;
-        progressBar.style = "width: " + percentage + "%"
+      function updateProgressBar(pb, percentage) {
+          progressBar.ariaValueNow = percentage;
+          progressBar.style = "width: " + percentage + "%"
+      }
     }
+    
 </script>

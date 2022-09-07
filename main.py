@@ -50,7 +50,9 @@ def start_download():
 
 @app.route("/downloading")
 def upload_status():
-    return render_template("downloading.html", downloading=request.args.get("filename"), download_id=request.args.get("download_id"))
+    download_id = request.args.get("download_id")
+    downloaded = os.path.exists(f"runs/downloads/{download_id}.zip") and not download_id in app.config["downloading"]
+    return render_template("downloading.html", downloading=request.args.get("filename"), download_id=download_id, downloaded=downloaded)
 
 @app.route("/download/<path:download_id>")
 def download(download_id):
