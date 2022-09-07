@@ -90,7 +90,7 @@ class TorrentClient:
         try:
 
             with zipfile.ZipFile(f"runs/downloads/{self.uuid}.zip", "w") as zip:
-                for piece in self.pieces_manager.files:
+                for piece in self.pieces_manager._load_files:
                     print(piece['path'])
                     zip.write(piece['path'])
             for piece in self.pieces_manager.files:
